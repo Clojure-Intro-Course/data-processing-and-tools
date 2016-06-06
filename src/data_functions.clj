@@ -150,7 +150,7 @@
 (defn print-outline
   "takes a vector of data points and prints the data as a table"
   [p-vec]
-  (println "|Name\t\t\t|Total Time\t\t|Solved Questions/Number of Questions\n")
+  (println "|Name\t\t|Total Time\t\t|Solved Questions/Number of Questions\n")
   (print-result p-vec q-names)
   (println "===================================END========================================"))
 

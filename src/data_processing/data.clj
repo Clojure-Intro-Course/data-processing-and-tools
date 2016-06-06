@@ -38,10 +38,7 @@
    "CM0-3" {:solved true, :min 3, :sec 0, :right? :all, :runs 2, :no-error false}
    "CM1-2" {:solved true, :min 6, :sec 13, :right? :most, :runs 2, :no-error false}
    "CM1-3" {:solved true, :min 8, :sec 58, :right? :most, :runs 3, :no-error false}
-   "CM2-1" {:solved false, :min 21, :sec 0, :right? :most, :runs 6, :no-error false}
-   "CM2-2" {:solved false, :min 21, :sec 0, :right? :never, :runs 0, :no-error true}
-   "CM3-1" {:solved false, :min 21, :sec 0, :right? :never, :runs 0, :no-error true}
-   "CM3-3" {:solved false, :min 21, :sec 0, :right? :never, :runs 0, :no-error true}])
+   "CM2-1" {:solved false, :min 21, :sec 0, :right? :most, :runs 6, :no-error false}])
 
 
 (def R13
@@ -114,18 +111,14 @@
    "R1-2" {:solved true, :min 12, :sec 33, :right? :all, :runs 3, :no-error false}
    "R2-2" {:solved true, :min 13, :sec 24, :right? :all, :runs 2, :no-error false}
    "R2-4" {:solved true, :min 18, :sec 27, :right? :all, :runs 2, :no-error false}
-   "R3-2" {:solved false, :min 21, :sec 0, :right? :some, :runs 2, :no-error false}
-   "R3-4" {:solved false, :min 21, :sec 0, :right? :never, :runs 0, :no-error true}])
+   "R3-2" {:solved false, :min 21, :sec 0, :right? :some, :runs 2, :no-error false}])
 
 (def CS20
   ["CS0-1" {:solved true, :min 0, :sec 50, :right? :all, :runs 2, :no-error false}
    "CS0-4" {:solved true, :min 2, :sec 12, :right? :all, :runs 1, :no-error true}
    "CS1-2" {:solved true, :min 3, :sec 07, :right? :all, :runs 1, :no-error false}
    "CS1-3" {:solved true, :min 13, :sec 37, :right? :all, :runs 5, :no-error false} ;input wrong command in terminal. Returned all true but didnt't run correctly
-   "CS2-2" {:solved false, :min 21, :sec 0, :right? :never, :runs 5, :no-error false}
-   "CS2-4" {:solved false, :min 21, :sec 0, :right? :never, :runs 0, :no-error true}
-   "CS3-1" {:solved false, :min 21, :sec 0, :right? :never, :runs 0, :no-error true}
-   "CS3-2" {:solved false, :min 21, :sec 0, :right? :never, :runs 0, :no-error true}])
+   "CS2-2" {:solved false, :min 21, :sec 0, :right? :never, :runs 5, :no-error false}])
 
 (def R23
   ["R0-3" {:solved true, :min 1, :sec 45, :right? :most, :runs 3, :no-error false}
@@ -191,10 +184,8 @@
    ;failing the participant moved on without solving the problem
    "CM1-4" {:solved false, :min 11, :sec 34, :right? :all, :runs 1, :no-error false}
    "CM2-1" {:solved false, :min 15, :sec 23, :right? :never, :runs 1, :no-error false}
-   "CM2-4" {:solved false, :min 21, :sec 0, :right? :some, :runs 4, :no-error false}
-   "CM3-2" {:solved false, :min 21, :sec 0, :right? :all, :runs 0, :no-error false}
-   "CM3-3" {:solved false, :min 21, :sec 0, :right? :all, :runs 0, :no-error false}])
+   "CM2-4" {:solved false, :min 21, :sec 0, :right? :some, :runs 4, :no-error false}])
 
-(def qTables (list ))
+(def qTables [R2 CM2 R6 CM6 R13 CM13 R16 CM16 R17 CS17 R20 CS20 R23 CS23 R25 CM25 R29 CM29])
 
-(def qList (list "0-1" "0-2" "0-3" "0-4" "1-1" "1-2" "1-3" "1-4" "2-1" "2-2" "2-3" "2-4" "3-1" "3-2" "3-3" "3-4"))
+(def qList ["0-1" "0-2" "0-3" "0-4" "1-1" "1-2" "1-3" "1-4" "2-1" "2-2" "2-3" "2-4" "3-1" "3-2" "3-3" "3-4"])

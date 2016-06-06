@@ -27,176 +27,115 @@
 ; pull the data from each question (question by question basis) -> the total time for this question, performance according to the type of error message
 
 
-
-
-
 (def not-nil? (complement nil?))
 
 (defn sortByQType [q]
 
   (concat
 
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "0-1")))
-
-              qTables))
-
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "0-2")))
-
-              qTables))
-
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "0-3")))
-
-              qTables))
-
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "0-4")))
-
-              qTables))
     (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "0-1")))
+                 qTables))
 
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "1-1")))
-
-              qTables))
-
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "1-2")))
-
-              qTables))
-
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "1-3")))
-
-              qTables))
-
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "1-4")))
-
-              qTables))
     (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "0-2")))
+                 qTables))
 
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "2-1")))
-
-              qTables))
-
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "2-2")))
-
-              qTables))
-
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "2-3")))
-
-              qTables))
-
-      (filter not-nil?
-
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "2-4")))
-
-              qTables))
     (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "0-3")))
+                 qTables))
 
-              (map (fn [x] ((apply assoc {} x)
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "0-4")))
+                 qTables))
 
-                       (str q "3-1")))
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "1-1")))
+                 qTables))
 
-              qTables))
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "1-2")))
+                 qTables))
 
-      (filter not-nil?
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "1-3")))
+                 qTables))
 
-              (map (fn [x] ((apply assoc {} x)
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "1-4")))
+                 qTables))
 
-                       (str q "3-2")))
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "2-1")))
+                 qTables))
 
-              qTables))
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "2-2")))
+                 qTables))
 
-      (filter not-nil?
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "2-3")))
+                 qTables))
 
-              (map (fn [x] ((apply assoc {} x)
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "2-4")))
+                 qTables))
 
-                       (str q "3-3")))
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "3-1")))
+                 qTables))
 
-              qTables))
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "3-2")))
+                 qTables))
 
-      (filter not-nil?
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "3-3")))
+                 qTables))
 
-              (map (fn [x] ((apply assoc {} x)
-
-                       (str q "3-4")))
-
-              qTables))))
+    (filter not-nil?
+            (map (fn [x] ((apply assoc {} x)
+                          (str q "3-4")))
+                 qTables))))
 
 (defn sortAllQData [q]
 
-    (concat
+  (concat
 
+    (sortByQType q)
 
-      (sortByQType q)
+    (filter not-nil?
+            (map
+              (fn [x] ((apply assoc {} x)
+                       (str "R" q)))
+              qTables))
 
-      (filter not-nil?
+    (filter not-nil?
+            (map
+              (fn [x] ((apply assoc {} x)
+                       (str "CM" q)))
+              qTables))
 
-              (map
-
-                (fn [x] ((apply assoc {} x)
-
-                         (str "R" q)))
-
-                qTables))
-
-      (filter not-nil?
-
-              (map
-
-                (fn [x] ((apply assoc {} x)
-
-                         (str "CM" q)))
-
-                qTables))
-
-      (filter not-nil?
-
-              (map
-
-                (fn [x] ((apply assoc {} x)
-
-                         (str "CS" q)))
-
-                qTables))))
+    (filter not-nil?
+            (map
+              (fn [x] ((apply assoc {} x)
+                       (str "CS" q)))
+              qTables))))
 
 (defn compareAllQData [q]
 
@@ -220,8 +159,8 @@
            "minutes and"
 
            (Math/round (float (mod 60 (/ (+ (* 60 (reduce + (map :min (sortAllQData q))))
-                                    (reduce + (map :sec (sortAllQData q))))
-                                 (count (sortAllQData q))))))
+                                            (reduce + (map :sec (sortAllQData q))))
+                                         (count (sortAllQData q))))))
 
            "seconds")
 

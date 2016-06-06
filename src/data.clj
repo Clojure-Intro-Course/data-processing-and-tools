@@ -1,4 +1,4 @@
-(ns data_processing.data)
+(ns src.data)
 
 (def R2
   ["R0-1" {:solved true, :min 1, :sec 1, :right? :all, :runs 2, :no-error false}

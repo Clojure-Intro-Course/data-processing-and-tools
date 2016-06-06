@@ -1,5 +1,5 @@
-(ns data_processing.core)
+(ns core)
 
 (defn -main [& args]
-  (load-file "src/data_processing/data_functions.clj"))
+  (load-file "src/data_functions.clj"))
 

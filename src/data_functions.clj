@@ -1,5 +1,5 @@
-(ns data_processing.data_functions
-  (:use data_processing.data))
+(ns data_functions
+  (:use data))
 
 
 

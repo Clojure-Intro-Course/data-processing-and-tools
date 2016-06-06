@@ -5,5 +5,5 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [expectations "2.1.8"]]
-  :main ^:skip-aot data_processing.core
+  :main ^:skip-aot core
   :plugins [[lein-expectations "0.0.8"]])

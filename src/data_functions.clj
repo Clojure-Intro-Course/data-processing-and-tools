@@ -83,7 +83,8 @@
   [person-vec result previous-t]
   (if (empty? person-vec)
     result
-    (let [id (first (first person-vec)) h-map (second (first person-vec))]
+    (let [id (first (first person-vec))
+          h-map (second (first person-vec))]
      (processor (rest person-vec)
                 (conj result [id (- (time->seconds h-map) previous-t) (:solved h-map)])
                 (time->seconds h-map)))))

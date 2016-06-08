@@ -100,16 +100,17 @@
 ;; extracting each question info functions #1 (filtering and merging retries) ===========================
 
 (defn retry-filter
-  [person decide]
   "takes a person structure and a boolean that indicates if retry data is wanted,
   returns retry or initial try data according to the boolean value"
+  [person decide]
   (vec
     (filter
       (fn [each-vec] ((if decide > <=) (count (first each-vec)) 5))
       (take-q-info person))))
 
-(defn merge-retry [original each-retry info]
+(defn merge-retry
   "merges a retry into the corresponding initial try"
+  [original each-retry info]
   (map
     (fn [each-vec]
       (if (= (subs (first each-vec) 0 (+ info 4)) (subs (first each-retry) 0 (+ info 4)))
@@ -117,9 +118,10 @@
         each-vec))
     original))
 
-(defn merge-recur [original retry]
+(defn merge-recur
   "takes two vectors, the initial tries and the retries,
   and returns the merged resulting vector"
+  [original retry]
   (if (empty? retry)
     original
     (merge-recur (merge-retry original (first retry) (lang? (first (first original))) )
@@ -144,6 +146,7 @@
               (first names)
               (nice-time (after-time-adj head))
               (str (solved-questions head) "/" 8))
+      (print "Tried Q: ")
       (println (nice-str (adjusted-data head)))
       (println)
       (print-result (rest p-vec) (rest names)))))
@@ -151,7 +154,7 @@
 (defn print-outline
   "takes a vector of data points and prints the data as a table"
   [p-vec]
-  (println "|Name\t\t|Total Time\t\t|Solved Questions/Number of Questions\n")
+  (println "\n|Name\t\t|Total Time\t|Solved Questions/Number of Questions\n")
   (print-result p-vec q-names)
   (println "===================================END========================================"))
 

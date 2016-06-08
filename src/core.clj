@@ -1,8 +1,7 @@
 (ns core)
 
 (defn -main [& args]
-  (if (= (first args) "people")
+  (if (= (first args) "p")
       (load-file "src/data_functions.clj")
       nil))
-  ;(load-file "src/data_functions.clj"))
 

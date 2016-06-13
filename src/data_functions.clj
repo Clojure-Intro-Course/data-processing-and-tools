@@ -162,8 +162,9 @@
   (print-outline q-tables q-names))
 
 (defn print-select [s]
-  (let [id (.indexOf q-names s)]
-    (print-outline [(get q-tables id)] [s])))
+  (let [name-r (str "R" s)
+        id-r (.indexOf q-names name-r)
+        id-c (inc id-r)
+        name-c (get q-names id-c)]
+    (print-outline [(get q-tables id-r) (get q-tables id-c)] [name-r name-c])))
 
-;(print-all)
-(print-select "CM25")

@@ -187,7 +187,8 @@
    "CM2-4" {:solved false, :min 21, :sec 0, :right? :some, :runs 4, :no-error false}])
 
 
-(def qTables [R2 CM2 R6 CM6 R13 CM13 R16 CM16 R17 CS17 R20 CS20 R23 CS23 R25 CM25 R29 CM29])
+(def q-tables [R2 CM2 R6 CM6 R13 CM13 R16 CM16 R17 CS17 R20 CS20 R23 CS23 R25 CM25 R29 CM29])
 (def q-names ["R2" "CM2" "R6" "CM6" "R13" "CM13" "R16" "CM16" "R17" "CS17" "R20" "CS20" "R23" "CS23" "R25" "CM25" "R29" "CM29"])
+
 
 (def qList ["0-1" "0-2" "0-3" "0-4" "1-1" "1-2" "1-3" "1-4" "2-1" "2-2" "2-3" "2-4" "3-1" "3-2" "3-3" "3-4"])

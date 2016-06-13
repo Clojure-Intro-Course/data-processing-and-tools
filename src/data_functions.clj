@@ -153,9 +153,17 @@
 
 (defn print-outline
   "takes a vector of data points and prints the data as a table"
-  [p-vec]
+  [p-vec names]
   (println "\n|Name\t\t|Total Time\t|Solved Questions/Number of Questions\n")
-  (print-result p-vec q-names)
+  (print-result p-vec names)
   (println "===================================END========================================"))
 
-(print-outline qTables)
+(defn print-all []
+  (print-outline q-tables q-names))
+
+(defn print-select [s]
+  (let [id (.indexOf q-names s)]
+    (print-outline [(get q-tables id)] [s])))
+
+;(print-all)
+(print-select "CM25")

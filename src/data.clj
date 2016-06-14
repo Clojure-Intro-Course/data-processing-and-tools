@@ -62,7 +62,24 @@
    "CM3-3" {:solved true, :min 19, :sec 38, :right? :all, :runs 2, :no-error false}
    "CM3-1-re-1" {:solved false, :min 21, :sec 0, :right? :most, :runs 1, :no-error false}]) ; solved should be false in the processing of the data bc the time exceeds 21 mins
 
+(def R14
+  ["R0-1" {:solved true, :min 0, :sec 29, :right? :all, :runs 2, :no-error false}
+   "R0-2" {:solved true, :min 0, :sec 51, :right? :all, :runs 2, :no-error false}
+   "R1-1" {:solved true, :min 1, :sec 23, :right? :all, :runs 2, :no-error false}
+   "R1-2" {:solved true, :min 2, :sec 6, :right? :all, :runs 2, :no-error false}
+   "R2-1" {:solved true, :min 6, :sec 41, :right? :all, :runs 2, :no-error false}
+   "R2-2" {:solved true, :min 7, :sec 11, :right? :all, :runs 2, :no-error false}
+   "R3-1" {:solved true, :min 10, :sec 3, :right? :all, :runs 3, :no-error false}
+   "R3-2" {:solved true, :min 12, :sec 24, :right? :all, :runs 2, :no-error false}])
 
+(def CS14
+  ["CS0-3" {:solved true, :min 1, :sec 34, :right? :all, :runs 2, :no-error false}
+   "CS0-4" {:solved true, :min 4, :sec 41, :right? :most, :runs 3, :no-error false}
+   "CS1-3" {:solved true, :min 5, :sec 49, :right? :all, :runs 2, :no-error false}
+   "CS1-4" {:solved true, :min 8, :sec 39, :right? :all, :runs 2, :no-error false}
+   "CS2-3" {:solved true, :min 9, :sec 52, :right? :all, :runs 2, :no-error false}
+   "CS2-4" {:solved true, :min 17, :sec 41, :right? :most, :runs 6, :no-error false}
+   "CS3-3" {:solved false, :min 21, :sec 0, :right? :some, :runs 1, :no-error false}])
 
 (def R16
   ["R0-3" {:solved true, :min 0, :sec 42, :right? :all, :runs 1, :no-error true}
@@ -165,6 +182,24 @@
    "CM3-2" {:solved true, :min 12, :sec 7, :right? :all, :runs 3, :no-error false}
    "CM3-4" {:solved true, :min 13, :sec 9, :right? :all, :runs 2, :no-error false}])
 
+(def R26
+  ["R0-1" {:solved true, :min 0, :sec 49, :right? :all, :runs 2, :no-error false}
+   "R0-2" {:solved true, :min 1, :sec 46, :right? :all, :runs 2, :no-error false}
+   "R1-1" {:solved true, :min 2, :sec 35, :right? :all, :runs 2, :no-error false}
+   "R1-2" {:solved true, :min 5, :sec 19, :right? :all, :runs 2, :no-error false}
+   "R2-1" {:solved true, :min 8, :sec 55, :right? :all, :runs 2, :no-error false}
+   "R2-2" {:solved true, :min 9, :sec 50, :right? :all, :runs 2, :no-error false}
+   "R3-1" {:solved true, :min 13, :sec 14, :right? :all, :runs 2, :no-error false}
+   "R3-2" {:solved true, :min 14, :sec 27, :right? :all, :runs 2, :no-error false}])
+
+(def CS26
+  ["CS0-3" {:solved true, :min 1, :sec 26, :right? :all, :runs 2, :no-error false}
+   "CS0-4" {:solved true, :min 4, :sec 41, :right? :all, :runs 3, :no-error false}
+   "CS1-3" {:solved true, :min 6, :sec 21, :right? :all, :runs 2, :no-error false}
+   "CS1-4" {:solved true, :min 8, :sec 45, :right? :all, :runs 2, :no-error false}
+   "CS2-3" {:solved true, :min 9, :sec 34, :right? :all, :runs 2, :no-error false}
+   "CS2-4" {:solved true, :min 18, :sec 02, :right? :all, :runs 4, :no-error false}
+   "CS3-3" {:solved false, :min 21, :sec 0, :right? :some, :runs 1, :no-error false}])
 
 (def R29
   ["R0-1" {:solved true, :min 1, :sec 3, :right? :all, :runs 2, :no-error false}
@@ -187,8 +222,11 @@
    "CM2-4" {:solved false, :min 21, :sec 0, :right? :some, :runs 4, :no-error false}])
 
 
-(def q-tables [R2 CM2 R6 CM6 R13 CM13 R16 CM16 R17 CS17 R20 CS20 R23 CS23 R25 CM25 R29 CM29])
-(def q-names ["R2" "CM2" "R6" "CM6" "R13" "CM13" "R16" "CM16" "R17" "CS17" "R20" "CS20" "R23" "CS23" "R25" "CM25" "R29" "CM29"])
-
+(def q-tables [R2 CM2 R6 CM6 R13 CM13 R14 CS14 R16 CM16
+               R17 CS17 R20 CS20 R23 CS23 R25 CM25 R26 CS26
+               R29 CM29])
+(def q-names ["R2" "CM2" "R6" "CM6" "R13" "CM13" "R14" "CS14" "R16" "CM16"
+              "R17" "CS17" "R20" "CS20" "R23" "CS23" "R25" "CM25" "R26" "CS26"
+              "R29" "CM29"])
 
 (def qList ["0-1" "0-2" "0-3" "0-4" "1-1" "1-2" "1-3" "1-4" "2-1" "2-2" "2-3" "2-4" "3-1" "3-2" "3-3" "3-4"])

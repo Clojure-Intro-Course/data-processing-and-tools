@@ -98,8 +98,9 @@
    "CM1-4" {:solved true, :min 6, :sec 51, :right? :all, :runs 2, :no-error false}
    "CM2-1" {:solved true, :min 13, :sec 35, :right? :all, :runs 3, :no-error false}
    "CM2-3" {:solved true, :min 14, :sec 36, :right? :all, :runs 2, :no-error false}
-   "CM3-3" {:solved true, :min 15, :sec 4, :right? :all, :runs 1, :no-error true} ; There was no error in the code
-   "CM3-4" {:solved true, :min 17, :sec 0, :right? :all, :runs 2, :no-error false, :time-adj -42}])
+   "CM3-4" {:solved true, :min 16, :sec 32, :right? :all, :runs 2, :no-error false, :time-adj -42}]) ; result that CM3-3 is deleted
+   ;"CM3-3" {:solved true, :min 15, :sec 4, :right? :all, :runs 1, :no-error true} ; There was no error in the code
+   ;"CM3-4" {:solved true, :min 17, :sec 0, :right? :all, :runs 2, :no-error false, :time-adj -42}])
 
 (def R17
   ["R0-1" {:solved true, :min 0, :sec 40, :right? :all, :runs 2, :no-error false}

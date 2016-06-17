@@ -77,6 +77,12 @@
   [input-vec]
   (vec (map (fn [each-vec] [(first each-vec) (nice-time (second each-vec)) (last each-vec)]) input-vec)))
 
+(defn nice-solved
+  "for each vector inside the processed vector,
+  convert the boolean into a :solved or :unsolved keyword"
+  [input-vec]
+  (map  #(assoc % 2 (if (get % 2) :solved :unsolved)) input-vec))
+
 (defn processor
   "takes the nested vector structure of a person structure, an accumulated resulting vector, and the previous time,
   and returns the accumulated resulting vector when the nested vector structures becomes empty"
@@ -138,19 +144,6 @@
 
 
 ;; question by question analysis =======================================================
-;; (def CS23
-;;   ["CS0-1" {:solved true, :min 2, :sec 1, :right? :all, :runs 2, :no-error false}
-;;    "CS0-2" {:solved true, :min 3, :sec 7, :right? :all, :runs 2, :no-error false}
-;;    "CS1-2" {:solved true, :min 4, :sec 37, :right? :all, :runs 2, :no-error false}
-;;    "CS1-3" {:solved false, :min 7, :sec 16, :right? :some, :runs 2, :no-error false}
-;;    "CS2-2" {:solved true, :min 9, :sec 42, :right? :most, :runs 2, :no-error false}
-;;    "CS2-4" {:solved true, :min 11, :sec 48, :right? :all, :runs 3, :no-error false}
-;;    "CS3-1" {:solved false, :min 13, :sec 41, :right? :some, :runs 1, :no-error false}
-;;    "CS3-4" {:solved true, :min 15, :sec 2, :right? :all, :runs 2, :no-error false}
-;;    "CS1-3-re-1" {:solved false, :min 17, :sec 37, :right? :some, :runs 1, :no-error false}
-;;    "CS3-1-re-1" {:solved false, :min 21, :sec 0, :right? :some, :runs 1, :no-error false}])
-
-; Eventually, we need a function that takes an integer and returns info about the question
 
 ; find the avg time of the vector
 (defn find-avg-t [v]
@@ -215,15 +208,15 @@
         q-cs(get-question-info question "CS")]
     (println "\n========== Question" question " information: ============\n")
 
-    (println "Racket tries:           " (nice-str q-r))
+    (println "Racket tries:           " (nice-solved (nice-str q-r)))
     (print "\t| Avg time: " (nice-time (find-avg-t q-r)) "|")
     (println " Correct ans: " (correct-ans q-r) "% |")
 
-    (println "Clojure Modified tries: " (nice-str q-cm))
+    (println "Clojure Modified tries: " (nice-solved (nice-str q-cm)))
     (print "\t| Avg time: " (nice-time (find-avg-t q-cm)) "|")
     (println " Correct ans: " (correct-ans q-cm) "% |")
 
-    (println "Clojure Standard tries: " (nice-str q-cs))
+    (println "Clojure Standard tries: " (nice-solved (nice-str q-cs)))
     (print "\t| Avg time: " (nice-time (find-avg-t q-cs)) "|")
     (println " Correct ans: " (correct-ans q-cs) "% |")))
 
@@ -234,7 +227,3 @@
       (do
         (print-question (first q-l))
         (recur (rest q-l))))))
-
-; TODO
-; Formatting vectors
-; Documenting and refractoring

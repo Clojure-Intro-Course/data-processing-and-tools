@@ -112,6 +112,10 @@
 (expect
   (assoc-in
     (vec (drop-last dummy-C-expected))
+    [4 1](assoc-in
+    (vec (drop-last dummy-C-expected))
     [4 1]
     (+ (get-in dummy-C-expected [4 1]) (get-in dummy-C-expected [7 1])))
+    (+ (get-in dummy-C-expected [4 1]) (get-in dummy-C-expected [7 1])))
   (adjusted-data dummy-C))
+

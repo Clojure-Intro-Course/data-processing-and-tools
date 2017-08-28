@@ -222,7 +222,21 @@
    "CM2-1" {:solved false, :min 15, :sec 23, :right? :never, :runs 1, :no-error false}
    "CM2-4" {:solved false, :min 21, :sec 0, :right? :some, :runs 4, :no-error false}])
 
+(def R4
+ ["R0-2" {:solved true, :min 3, :sec 53, :right? :some, :runs 2, :no-error false}
+  "R0-3" {:solved true, :min 5, :sec 50, :right? :most, :runs 2, :no-error false}
+  "R1-1" {:solved true, :min 8, :sec 4, :right? :most, :runs 3, :no-error false}
+  "R1-4" {:solved false, :min 9, :41, :right? :never, :runs 2, :no-error false}
+  "R2-2" {:solved true, :min 11, :sec 50, :right? :some, :runs 3, :no-error false}
+  "R2-4" {:solved false, :min 16, :sec 49, :right? :some, :runs 6, :no-error false, :time-adj -22};Chrome froze while trying to view this question
+  "R3-2" {:solved false, :min 20, :sec 59, :right? :never, :runs 6 :no-error false}])
 
+(def CM4
+ ["CM0-1" {:solved true, :min 2, :sec 1 :right? :all, :runs 2, :no-error false}
+  "CM0-4" {:solved true, :min 4, :sec 27, :right? :all, :runs 2 :no-error false};'corrected' the misnamed function by changign the tests. Unsure how to score.
+  "CM1-2" {:solved false, :min 10, :sec 52, :right? :never, :runs 2, :no-error false}
+  "CM1-3" {:solved true, :min 18, :sec 17, :right? :some, :runs 6, :no-error false}
+  "CM2-1" {:solved false, :min 21, :sec 0 :right? :never, :runs 1, no-error false}])
 (def q-tables [R2 CM2 R6 CM6 R13 CM13 R14 CS14 R16 CM16
                R17 CS17 R20 CS20 R23 CS23 R25 CM25 R26 CS26
                R29 CM29])

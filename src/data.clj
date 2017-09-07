@@ -226,7 +226,7 @@
  ["R0-2" {:solved true, :min 3, :sec 53, :right? :some, :runs 2, :no-error false}
   "R0-3" {:solved true, :min 5, :sec 50, :right? :most, :runs 2, :no-error false}
   "R1-1" {:solved true, :min 8, :sec 4, :right? :most, :runs 3, :no-error false}
-  "R1-4" {:solved false, :min 9, :41, :right? :never, :runs 2, :no-error false}
+  "R1-4" {:solved false, :min 9, :sec :41, :right? :never, :runs 2, :no-error false}
   "R2-2" {:solved true, :min 11, :sec 50, :right? :some, :runs 3, :no-error false}
   "R2-4" {:solved false, :min 16, :sec 49, :right? :some, :runs 6, :no-error false, :time-adj -22};Chrome froze while trying to view this question
   "R3-2" {:solved false, :min 20, :sec 59, :right? :never, :runs 6 :no-error false}])
@@ -256,7 +256,7 @@
   "CS1-2" {:solved true, :min 12, :sec 21, :right? :all, :runs 2, :no-error false}
   "CS2-1" {:solved true, :min 15, :sec 37, :right? :all, :runs 3, :no-error false}
   "CS2-4" {:solved true, :min 19, :sec 21, :right? :all, :runs 3, :no-error false}
-  "CS3-2" {:solved true, :min 22, :sec 41, :right?, :all, :runs 2 :no-error, :time-adj -30}]);added time into second video onto first.
+  "CS3-2" {:solved true, :min 3, :sec 9, :right?, :all, :runs 2 :no-error false, :time-adj 1171}]);added time into second video onto first.
 
 (def R8
  ["R0-2" {:solved true, :min 0, :sec 58, :right? :all, :runs 2, :no-error false}
@@ -265,7 +265,7 @@
   "R1-4" {:solved true, :min 6, :sec 28, :right? :all, :runs 3, :no-error false}
   "R2-3" {:solved true, :min 9, :sec 23, :right? :all, :runs 3, :no-error false}
   "R2-4" {:solved true, :min 11, :sec 0, :right? :all, :runs 3, :no-error false}
-  "R3-1" {:solved false, :min 13, :47, :right? :never, :runs 1, :no-error false}
+  "R3-1" {:solved false, :min 13, :sec :47, :right? :never, :runs 1, :no-error false}
   "R3-3" {:solved false, :min 18, :sec 46, :right? :never, :runs 3, :no-error false}])
 
 (def CM8

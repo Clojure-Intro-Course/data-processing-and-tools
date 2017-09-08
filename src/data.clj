@@ -226,7 +226,7 @@
  ["R0-2" {:solved true, :min 3, :sec 53, :right? :some, :runs 2, :no-error false}
   "R0-3" {:solved true, :min 5, :sec 50, :right? :most, :runs 2, :no-error false}
   "R1-1" {:solved true, :min 8, :sec 4, :right? :most, :runs 3, :no-error false}
-  "R1-4" {:solved false, :min 9, :sec :41, :right? :never, :runs 2, :no-error false}
+  "R1-4" {:solved false, :min 9, :sec 41, :right? :never, :runs 2, :no-error false}
   "R2-2" {:solved true, :min 11, :sec 50, :right? :some, :runs 3, :no-error false}
   "R2-4" {:solved false, :min 16, :sec 49, :right? :some, :runs 6, :no-error false, :time-adj -22};Chrome froze while trying to view this question
   "R3-2" {:solved false, :min 20, :sec 59, :right? :never, :runs 6 :no-error false}])
@@ -296,9 +296,10 @@
 
 (def q-tables [R2 CM2 R6 CM6 R13 CM13 R14 CS14 R16 CM16
                R17 CS17 R20 CS20 R23 CS23 R25 CM25 R26 CS26
-               R29 CM29])
+               R29 CM29 R4 CM4 R9 CS9 R8 CM8 R12 CS12])
+
 (def q-names ["R2" "CM2" "R6" "CM6" "R13" "CM13" "R14" "CS14" "R16" "CM16"
               "R17" "CS17" "R20" "CS20" "R23" "CS23" "R25" "CM25" "R26" "CS26"
-              "R29" "CM29"])
+              "R29" "CM29" "R4" "CM4" "R9" "CS9" "R8" "CM8" "R12" "CS12"])
 
 (def q-str ["0-1" "0-2" "0-3" "0-4" "1-1" "1-2" "1-3" "1-4" "2-1" "2-2" "2-3" "2-4" "3-1" "3-2" "3-3" "3-4"])

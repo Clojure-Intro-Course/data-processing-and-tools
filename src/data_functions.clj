@@ -199,6 +199,7 @@
         id-r (.indexOf q-names name-r)
         id-c (inc id-r)
         name-c (get q-names id-c)]
+        (println id-r)
     (print-outline [(get q-tables id-r) (get q-tables id-c)] [name-r name-c])))
 
 

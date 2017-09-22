@@ -1,5 +1,5 @@
 (ns core
-  (:use data_functions))
+  (:use data-functions))
 
 
 (defn -main
@@ -18,4 +18,3 @@
         (print-all-questions)
         (print-question (apply str (rest (first args)))))
     :else "No argument or an invalid argument is given"))
-

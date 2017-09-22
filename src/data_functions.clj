@@ -1,4 +1,4 @@
-(ns datafunctions
+(ns data-functions
   (:use data))
 
 
@@ -40,7 +40,7 @@
   and returns 0 if it represents racket 1 if it represents clojure"
   [string]
   (if (keyword? string) (lang? (name string))
-   (if (= (first string) "R") 0 1)))
+   (if (= (first string) \R) 0 1)))
 
 
 ;; time adjustment functions =============================================================
@@ -49,7 +49,7 @@
   "takes a person as an argument
   and returns the total time in seconds that should be adjusted"
   [person]
-  (pprint person)
+  (print person)
   (reduce
     (fn [cumul each]
       (if-let

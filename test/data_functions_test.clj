@@ -1,7 +1,7 @@
-(ns data_functions_test
+(ns data-functions-test
   (:use expectations)
   (:require [core :refer :all]
-            [data_functions :refer :all]
+            [data-functions :refer :all]
             [data :refer :all]))
 
 ;; Dummy data for testing ===============================================================
@@ -37,7 +37,7 @@
    ["R3-2-re-1" (time-d 14 25 21 0) true]])
 
 (def dummy-C
-  ["CM0-1" {:solved true, :min 1, :sec 22, :right? :all, :runs 2, :no-error false}
+  ["CM0-1 []" {:solved true, :min 1, :sec 22, :right? :all, :runs 2, :no-error false}
    "CM0-3" {:solved true, :min 3, :sec 0, :right? :all, :runs 2, :no-error false}
    "CM1-2" {:solved true, :min 6, :sec 13, :right? :most, :runs 2, :no-error false, :time-adj -33}
    "CM1-3" {:solved true, :min 8, :sec 58, :right? :most, :runs 3, :no-error false}

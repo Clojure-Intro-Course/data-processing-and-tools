@@ -1,4 +1,4 @@
-(ns data-functions-test
+(ns data_functions_test
   (:use expectations)
   (:require [core :refer :all]
             [data_functions :refer :all]
@@ -117,3 +117,4 @@
     (+ (get-in dummy-C-expected [4 1]) (get-in dummy-C-expected [7 1])))
   (adjusted-data dummy-C))
 
+;;tests needed on get-session

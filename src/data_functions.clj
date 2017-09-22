@@ -1,4 +1,4 @@
-(ns data_functions
+(ns datafunctions
   (:use data))
 
 
@@ -13,6 +13,11 @@
   "gets the key (string) of nth vector"
   [person th]
   (nth person (* th 2)))
+
+(defn get-session
+ "gets the session from the data file"
+ [session]
+  (subjects session))
 
 (defn time->seconds
   "takes the map of a question in a person structure
@@ -31,10 +36,11 @@
   (str (quot seconds 60) "min " (mod seconds 60) "sec"))
 
 (defn lang?
-  "takes a string
+  "takes a string or keyword
   and returns 0 if it represents racket 1 if it represents clojure"
-  [s]
-  (if (= (first s) \R) 0 1))
+  [string]
+  (if (keyword? string) (lang? (name string))
+   (if (= (first string) "R") 0 1)))
 
 
 ;; time adjustment functions =============================================================
@@ -43,6 +49,7 @@
   "takes a person as an argument
   and returns the total time in seconds that should be adjusted"
   [person]
+  (pprint person)
   (reduce
     (fn [cumul each]
       (if-let
@@ -56,8 +63,8 @@
   "takes a person as an argument
   and computes the total time in seconds that the person takes for the test after adjustment"
   [person]
-  (let [last-entry (last person)]
-    (+ (time->seconds last-entry) (time-adj-result person))))
+  (let [last-entry (last (get-session person))]
+    (+ (time->seconds last-entry) (time-adj-result (get-session person)))))
 
 
 ;; # of solved problem calculation =============================================================
@@ -66,7 +73,7 @@
   "takes a person as an argument
   and returns the number of questions the person solved"
   [person]
-  (count (filter (fn [question] (:solved question)) (vals (vector->map person)))))
+  (count (filter (fn [question] (:solved question)) (vals (vector->map (get-session person))))))
 
 
 ;; extracting each question info functions #0 ==========================================================
@@ -100,7 +107,7 @@
   questions' info that the person attemped to solve
   (re-attempts are separately calculated)"
   [person]
-  (let [pair-vec (vec (map vec (partition 2 person)))]
+  (let [pair-vec (vec (map vec (partition 2 (get-session person))))]
     (processor pair-vec [] 0) ))
 
 ;; extracting each question info functions #1 (filtering and merging retries) ===========================
@@ -138,8 +145,8 @@
   questions' info that the person attemped to solve
   (re-attempts are included in the intial tries)"
   [person]
-  (let [original (retry-filter person false)
-        retry (retry-filter person true)]
+  (let [original (retry-filter (get-session person) false)
+        retry (retry-filter (get-session person) true)]
     (merge-recur original retry)))
 
 

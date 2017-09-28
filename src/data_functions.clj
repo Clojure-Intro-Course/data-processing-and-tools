@@ -42,6 +42,18 @@
   (if (keyword? string) (lang? (name string))
    (if (= (first string) \R) 0 1)))
 
+(defn racket?
+ "takes a string or keyword and returns true if it represents racket"
+ [inp-string]
+ (if (keyword? inp-string) (racket? (name inp-string))
+   (= (first inp-string) \R)))
+
+(defn modified?
+  "takes a string or keyword and returns true if it represents our error messages"
+  [inp-string]
+  (if (keyword? inp-string) (modified? (name inp-string))
+    (= (second inp-string) \M)))
+
 
 ;; time adjustment functions =============================================================
 
@@ -137,7 +149,7 @@
   [original retry]
   (if (empty? retry)
     original
-    (merge-recur (merge-retry original (first retry) (lang? (first (first original))) )
+    (merge-recur (merge-retry original (first retry) (lang? (first (first original))))
                  (rest retry))))
 
 (defn adjusted-data
@@ -234,3 +246,21 @@
       (do
         (print-question (first q-l))
         (recur (rest q-l))))))
+
+;;Comparison functions=============================
+
+(def test-sub (subjects :R14))
+
+(defn build-entry
+  "Takes a subject, and returns a map of the solved problems,
+  with problem names as keys, and solved problems as 1s."
+  [inp-subject]
+  (let [entries (filter map? inp-subject)
+        names (filter string? inp-subject)]
+    (zipmap (mapv keyword names)
+            (mapv #(if % 1 0) (map :solved entries)))))
+
+(defn build-sums
+  "Takes a vector of subjects, and returns the total solved for each problem"
+  [inp-subjects]
+  (map build-entry inp-subjects))

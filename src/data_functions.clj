@@ -263,4 +263,8 @@
 (defn build-sums
   "Takes a vector of subjects, and returns the total solved for each problem"
   [inp-subjects]
-  (map build-entry inp-subjects))
+  (let [duped-list (map build-entry (vals inp-subjects))
+        built-list (apply hash-map (keys duped-list))]
+(print built-list "and"  duped-list)
+(loop [todo (first duped-list), done built-list, undone duped-list]
+   (recur (first (rest undone)) (update done (first todo) #(+ % (second todo))) (rest undone)))))

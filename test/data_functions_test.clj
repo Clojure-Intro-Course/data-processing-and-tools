@@ -117,4 +117,34 @@
     (+ (get-in dummy-C-expected [4 1]) (get-in dummy-C-expected [7 1])))
   (adjusted-data dummy-C))
 
-;;tests needed on get-session
+;;tests for Comparison function
+(def dummy-entries
+  {:R11
+   ["R0-2" {:solved true, :min 0, :sec 59, :right? :all, :runs 2, :no-error false}
+    "R0-4" {:solved true, :min 1, :sec 35, :right? :all, :runs 2, :no-error false}
+    "R1-1" {:solved false, :min 3, :sec 28, :right? :some, :runs 1, :no-error false, :time-adj -7}
+    "R1-4" {:solved true, :min 6, :sec 7, :right? :most, :runs 2, :no-error false}]
+
+    :CM11
+    ["CM0-3" {:solved true, :min 2, :sec 13, :right? :all, :runs 2, :no-error false}
+     "CM0-1" {:solved true, :min 1, :sec 42, :right? :all, :runs 3, :no-error false}
+     "CM1-2" {:solved false, :min 3, :sec 13, :right? :some, :runs 4, :no-error false}
+     "CM1-3" {:solved false, :min 1, :sec 23, :right? :never, :runs 3, :no-error false}]
+
+     :R40
+     ["R0-2" {:solved true, :min 1, :sec 9, :right? :all, :runs 2, :no-error false}
+      "R0-3" {:solved true, :min 1, :sec 38, :right? :all, :runs 2, :no-error false}
+      "R1-2" {:solved false, :min 3, :sec 28, :right? :some, :runs 1, :no-error false, :time-adj -7}
+      "R1-3" {:solved true, :min 6, :sec 7, :right? :most, :runs 2, :no-error false}]
+
+     :CM40
+      ["CM0-2" {:solved true, :min 2, :sec 13, :right? :all, :runs 2, :no-error false}
+       "CM0-1" {:solved true, :min 1, :sec 32, :right? :all, :runs 2, :no-error false}
+       "CM1-1" {:solved false, :min 3, :sec 17, :right? :some, :runs 3, :no-error false}
+       "CM1-4" {:solved false, :min 4, :sec 53, :right? :never, :runs 3, :no-error false}]
+    })
+
+
+;;tests needed on get-session, build-sums, build-entry
+
+(expect )

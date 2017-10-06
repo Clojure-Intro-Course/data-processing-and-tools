@@ -61,7 +61,6 @@
   "takes a person as an argument
   and returns the total time in seconds that should be adjusted"
   [person]
-  (print person)
   (reduce
     (fn [cumul each]
       (if-let
@@ -75,8 +74,8 @@
   "takes a person as an argument
   and computes the total time in seconds that the person takes for the test after adjustment"
   [person]
-  (let [last-entry (last (get-session person))]
-    (+ (time->seconds last-entry) (time-adj-result (get-session person)))))
+  (let [last-entry (last person)]
+    (+ (time->seconds last-entry) (time-adj-result person))))
 
 
 ;; # of solved problem calculation =============================================================
@@ -85,7 +84,7 @@
   "takes a person as an argument
   and returns the number of questions the person solved"
   [person]
-  (count (filter (fn [question] (:solved question)) (vals (vector->map (get-session person))))))
+  (count (filter (fn [question] (:solved question)) (vals (vector->map  person)))))
 
 
 ;; extracting each question info functions #0 ==========================================================
@@ -113,14 +112,19 @@
      (processor (rest person-vec)
                 (conj result [id (- (time->seconds h-map) previous-t) (:solved h-map)])
                 (time->seconds h-map)))))
+;;processor seems to return everything correctly?!
+
 
 (defn take-q-info
   "takes a person structure and returns the vector of
   questions' info that the person attemped to solve
   (re-attempts are separately calculated)"
   [person]
-  (let [pair-vec (vec (map vec (partition 2 (get-session person))))]
+  (let [pair-vec (vec (map vec (partition 2 person)))]
     (processor pair-vec [] 0) ))
+;; take-q-info returns nil on dummy-R
+;;running the expression for pair vec on dummy-R looks good.
+
 
 ;; extracting each question info functions #1 (filtering and merging retries) ===========================
 
@@ -132,6 +136,8 @@
     (filter
       (fn [each-vec] ((if decide > <=) (count (first each-vec)) 5))
       (take-q-info person))))
+
+;; retry-filter on dummy-R returns null
 
 (defn merge-retry
   "merges a retry into the corresponding initial try"
@@ -157,9 +163,10 @@
   questions' info that the person attemped to solve
   (re-attempts are included in the intial tries)"
   [person]
-  (let [original (retry-filter (get-session person) false)
-        retry (retry-filter (get-session person) true)]
+  (let [original (retry-filter person false)
+        retry (retry-filter person true)]
     (merge-recur original retry)))
+;;get-session doesn't work in test cases. Duh.
 
 
 ;; question by question analysis =======================================================

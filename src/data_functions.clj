@@ -61,7 +61,6 @@
   "takes a person as an argument
   and returns the total time in seconds that should be adjusted"
   [person]
-  (print person)
   (reduce
     (fn [cumul each]
       (if-let
@@ -75,8 +74,8 @@
   "takes a person as an argument
   and computes the total time in seconds that the person takes for the test after adjustment"
   [person]
-  (let [last-entry (last (get-session person))]
-    (+ (time->seconds last-entry) (time-adj-result (get-session person)))))
+  (let [last-entry (last person)]
+    (+ (time->seconds last-entry) (time-adj-result person))))
 
 
 ;; # of solved problem calculation =============================================================
@@ -85,7 +84,7 @@
   "takes a person as an argument
   and returns the number of questions the person solved"
   [person]
-  (count (filter (fn [question] (:solved question)) (vals (vector->map (get-session person))))))
+  (count (filter (fn [question] (:solved question)) (vals (vector->map  person)))))
 
 
 ;; extracting each question info functions #0 ==========================================================
@@ -114,13 +113,17 @@
                 (conj result [id (- (time->seconds h-map) previous-t) (:solved h-map)])
                 (time->seconds h-map)))))
 
+
+
 (defn take-q-info
   "takes a person structure and returns the vector of
   questions' info that the person attemped to solve
   (re-attempts are separately calculated)"
   [person]
-  (let [pair-vec (vec (map vec (partition 2 (get-session person))))]
+  (let [pair-vec (vec (map vec (partition 2 person)))]
     (processor pair-vec [] 0) ))
+
+
 
 ;; extracting each question info functions #1 (filtering and merging retries) ===========================
 
@@ -130,7 +133,7 @@
   [person decide]
   (vec
     (filter
-      (fn [each-vec] ((if decide > <=) (count (first each-vec)) 5))
+      (fn [each-vec] ((if decide > <=) (count (name (first each-vec))) 5))
       (take-q-info person))))
 
 (defn merge-retry
@@ -138,7 +141,7 @@
   [original each-retry info]
   (map
     (fn [each-vec]
-      (if (= (subs (first each-vec) 0 (+ info 4)) (subs (first each-retry) 0 (+ info 4)))
+      (if (= (subs (name (first each-vec)) 0 (+ info 4)) (subs (name (first each-retry)) 0 (+ info 4)))
         [(first each-vec) (+ (second each-vec) (second each-retry)) (last each-retry)]
         each-vec))
     original))
@@ -157,9 +160,10 @@
   questions' info that the person attemped to solve
   (re-attempts are included in the intial tries)"
   [person]
-  (let [original (retry-filter (get-session person) false)
-        retry (retry-filter (get-session person) true)]
+  (let [original (retry-filter person false)
+        retry (retry-filter person true)]
     (merge-recur original retry)))
+
 
 
 ;; question by question analysis =======================================================

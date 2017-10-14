@@ -141,10 +141,7 @@
       ["CM0-2" {:solved true, :min 2, :sec 13, :right? :all, :runs 2, :no-error false}
        "CM0-1" {:solved true, :min 1, :sec 32, :right? :all, :runs 2, :no-error false}
        "CM1-1" {:solved false, :min 3, :sec 17, :right? :some, :runs 3, :no-error false}
-       "CM1-4" {:solved false, :min 4, :sec 53, :right? :never, :runs 3, :no-error false}]
-    })
+       "CM1-4" {:solved false, :min 4, :sec 53, :right? :never, :runs 3, :no-error false}]})
 
 
 ;;tests needed on get-session, build-sums, build-entry
-
-(expect )

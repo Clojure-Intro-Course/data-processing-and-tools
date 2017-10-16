@@ -121,7 +121,7 @@
   (re-attempts are separately calculated)"
   [person]
   (let [pair-vec (vec (map vec (partition 2 person)))]
-    (processor pair-vec [] 0) ))
+    (processor pair-vec [] 0)))
 
 
 
@@ -195,34 +195,50 @@
 
 ;; printing result =====================================================================
 
-(defn print-result [p-vec names]
-  (when ((complement empty?) p-vec)
-    (let [head (first p-vec)]
-      (printf "%s\t\t%s\t%s\n"
-              (first names)
-              (nice-time (after-time-adj head))
-              (str (solved-questions head) "/" 8))
+; (defn print-result [p-vec names]
+;   (when ((complement empty?) p-vec)
+;     (let [head (first (first p-vec))]
+;       (printf "%s\t\t%s\t%s\n"
+;               (first names)
+;               (nice-time (after-time-adj head))
+;               (str (solved-questions head) "/" 8))
+;       (print "Tried Q: ")
+;       (println (nice-str (adjusted-data head)))
+;       (println)
+;       (print-result (rest p-vec) (rest names)))))
+
+(defn print-result [input-subs]
+  (when ((complement empty?) input-subs)
+    (let [head (first input-subs)]
+    (printf "%s\t\t%s\t%s\n"
+      (name (first head))
+      (nice-time (after-time-adj (second head)))
+      (str (solved-questions (second head)) "/" 8))
       (print "Tried Q: ")
-      (println (nice-str (adjusted-data head)))
+      (println (nice-str (adjusted-data (second head))))
       (println)
-      (print-result (rest p-vec) (rest names)))))
+      (print-result (rest input-subs)))))
 
 (defn print-outline
   "takes a vector of data points and prints the data as a table"
-  [p-vec names]
+  [input-subs]
   (println "\n|Name\t\t|Total Time\t|Solved Questions/Number of Questions\n")
-  (print-result p-vec names)
+  (print-result input-subs)
   (println "===================================END========================================"))
 
 (defn print-all []
-  (print-outline q-tables q-names))
+  (print-outline subjects))
 
-(defn print-select [s]
-  (let [name-r (str "R" s)
-        id-r (.indexOf q-names name-r)
-        id-c (inc id-r)
-        name-c (get q-names id-c)]
-    (print-outline [(get q-tables id-r) (get q-tables id-c)] [name-r name-c])))
+(defn print-select [selected]
+  (let [RacketId (keyword (str "R" selected))
+        ClojureId (keyword (str "CS" selected))
+        ClojureModifiedId (keyword (str "CM" selected))]
+(when (not (empty? (subjects ClojureModifiedId)))
+    (print-outline {ClojureModifiedId (subjects ClojureModifiedId)
+                    RacketId (subjects RacketId)}))
+(when (not (empty? (subjects ClojureId)))
+    (print-outline {ClojureId (subjects ClojureId)
+                    RacketId (subjects RacketId)}))))
 
 
 (defn print-question [question]

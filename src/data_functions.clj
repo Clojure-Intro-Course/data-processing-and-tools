@@ -195,18 +195,6 @@
 
 ;; printing result =====================================================================
 
-; (defn print-result [p-vec names]
-;   (when ((complement empty?) p-vec)
-;     (let [head (first (first p-vec))]
-;       (printf "%s\t\t%s\t%s\n"
-;               (first names)
-;               (nice-time (after-time-adj head))
-;               (str (solved-questions head) "/" 8))
-;       (print "Tried Q: ")
-;       (println (nice-str (adjusted-data head)))
-;       (println)
-;       (print-result (rest p-vec) (rest names)))))
-
 (defn print-result [input-subs]
   (when ((complement empty?) input-subs)
     (let [head (first input-subs)]
@@ -266,6 +254,8 @@
       (do
         (print-question (first q-l))
         (recur (rest q-l))))))
+
+
 
 ;;Comparison functions=============================
 

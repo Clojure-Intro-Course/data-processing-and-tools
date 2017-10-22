@@ -1,5 +1,6 @@
 (ns data-functions
-  (:use data))
+  (:use data)
+  (:require clojure.string))
 
 
 ;; generic helper functions =============================================================

@@ -55,6 +55,13 @@
   (if (keyword? inp-string) (modified? (name inp-string))
     (= (second inp-string) \M)))
 
+(defn question-number
+ "takes a string or keyword and returns the question number stripped from the end"
+ [question]
+ (if (keyword? question)
+   (question-number (name question))
+   (last (clojure.string/split question #"[A-Z]"))))
+
 
 ;; time adjustment functions =============================================================
 
@@ -178,11 +185,19 @@
     0
     (* 100 (double (/ (count (filter #(last %) v)) (count v))))))
 
-; a funtion that takes a person,
-; and returns the specific question
-(defn get-question-from-person [person question]
-  (let [lang (lang? (first person))]
-    (filter #(= (subs (first %) (+ lang 1) (+ lang 4)) question) (adjusted-data person))))
+
+(defn get-question-from-person
+ "retrieves the question specified from the person vector, pass a third argument to specify strict matching"
+ ([person question-full]
+ (first (let [person-info (adjusted-data (second person))
+       question (question-number question-full)]
+   (filter #(= question (question-number (first %))) person-info))))
+;;strict version
+ ([person question strict]
+ (first (let [person-info (adjusted-data (second person))]
+   (filter #(= question (first %)) person-info)))))
+;; possible todo, make this 'smart' and able to choose whether to use the second.
+
 
 ; takes a question and returns a vector of every try of that question
 (defn get-question [question]
@@ -192,6 +207,7 @@
 (defn get-question-info [question ver]
   (let [tar (str ver question)]
     (filter #(= tar (first %)) (get-question question))))
+
 
 
 ;; printing result =====================================================================
@@ -255,8 +271,6 @@
       (do
         (print-question (first q-l))
         (recur (rest q-l))))))
-
-
 
 ;;Comparison functions=============================
 

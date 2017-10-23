@@ -68,6 +68,11 @@
 (expect 0 (lang? "R0-1"))
 (expect 1 (lang? "CM0-2"))
 
+(expect "4-1" (question-number "CM4-1"))
+(expect "0-2" (question-number "R0-2"))
+(expect "4-1" (question-number :CM4-1))
+(expect "0-4" (question-number :R0-4))
+
 
 ;; tests for time-adj-result =================================================================
 
@@ -116,3 +121,11 @@
     [4 1]
     (+ (get-in dummy-C-expected [4 1]) (get-in dummy-C-expected [7 1])))
   (adjusted-data dummy-C))
+
+;; tests for seeking and agregating of questions====================================
+
+(expect [:CM0-1 82 true]
+    (get-question-from-person [:theUserName dummy-C] :CM0-1))
+
+(expect [:R3-4 59 true]
+    (get-question-from-person [:theUserName dummy-R] :R3-4))

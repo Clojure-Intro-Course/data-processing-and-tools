@@ -192,6 +192,7 @@
  (first (let [person-info (adjusted-data (second person))
        question (question-number question-full)]
    (filter #(= question (question-number (first %))) person-info))))
+
 ;;strict version
  ([person question strict]
  (first (let [person-info (adjusted-data (second person))]
@@ -202,6 +203,23 @@
 ; takes a question and returns a vector of every try of that question
 (defn get-question [question]
   (reduce (fn [default each] (concat default (get-question-from-person each question))) [] q-tables))
+
+(defn get-all-of-question
+ "takes a question as a string or keyword and a vector of people and returns every try of that question in a vector.
+ Provide a third argument forexact keyword matching."
+ ([question-full input-list]
+ (let [question (question-number question-full)]
+ ;;removes the empty returns from non-matching people.
+  (filter #(not (nil? %))
+   (map #(get-question-from-person % question) input-list))))
+
+ ([question input-list optional]
+ ;;removes the empty returns from non-matching people.
+  (filter #(not (nil? %))
+   (map #(get-question-from-person % question "Opttrigger") input-list))))
+
+
+
 
 ; takes a question and version info, returns the targeted result
 (defn get-question-info [question ver]

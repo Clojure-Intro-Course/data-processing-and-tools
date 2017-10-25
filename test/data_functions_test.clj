@@ -129,3 +129,26 @@
 
 (expect [:R3-4 59 true]
     (get-question-from-person [:theUserName dummy-R] :R3-4))
+
+;;base and single specific matching works
+(expect '([:CM2-2 359 true])
+ (get-all-of-question :CM2-2 {:some dummy-C :other dummy-R} "exact"))
+(expect '([:R1-1 254 true])
+ (get-all-of-question :R1-1 {:some dummy-C :other dummy-R} "trigger"))
+(expect '([:CM2-2 359 true])
+ (get-all-of-question "2-2" {:some dummy-C :other dummy-R}) )
+;;returns multiple if multiple are present
+(expect '([:CM2-2 359 true] [:CM2-2 359 true])
+ (get-all-of-question :CM2-2 {:some dummy-C :other dummy-R :another dummy-C}) )
+;;does not select the toher langauge in specific mode
+(expect '([:CM2-2 359 true])
+ (get-all-of-question :CM2-2
+  {:some dummy-C
+   :other dummy-R
+   :another [:R2-2 {:solved true, :min 1, :sec 22, :right? :all, :runs 2, :no-error false}]} "exact"))
+//but does in inexact mode
+(expect '([:CM2-2 359 true] [:R2-2 82 true])
+ (get-all-of-question :CM2-2
+  {:some dummy-C
+   :other dummy-R
+   :another [:R2-2 {:solved true, :min 1, :sec 22, :right? :all, :runs 2, :no-error false}]} ))

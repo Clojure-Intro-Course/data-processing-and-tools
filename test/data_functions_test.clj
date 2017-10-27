@@ -124,12 +124,14 @@
 
 ;; tests for seeking and agregating of questions====================================
 
+;;test get-question-from-person
 (expect [:CM0-1 82 true]
     (get-question-from-person [:theUserName dummy-C] :CM0-1))
 
 (expect [:R3-4 59 true]
     (get-question-from-person [:theUserName dummy-R] :R3-4))
 
+;;test get-all-of-question
 ;;base and single specific matching works
 (expect '([:CM2-2 359 true])
  (get-all-of-question :CM2-2 {:some dummy-C :other dummy-R} "exact"))
@@ -140,15 +142,43 @@
 ;;returns multiple if multiple are present
 (expect '([:CM2-2 359 true] [:CM2-2 359 true])
  (get-all-of-question :CM2-2 {:some dummy-C :other dummy-R :another dummy-C}) )
-;;does not select the toher langauge in specific mode
+;;does not select the other langauge in specific mode
 (expect '([:CM2-2 359 true])
  (get-all-of-question :CM2-2
   {:some dummy-C
    :other dummy-R
    :another [:R2-2 {:solved true, :min 1, :sec 22, :right? :all, :runs 2, :no-error false}]} "exact"))
-//but does in inexact mode
+;;but does in inexact mode
 (expect '([:CM2-2 359 true] [:R2-2 82 true])
  (get-all-of-question :CM2-2
   {:some dummy-C
    :other dummy-R
-   :another [:R2-2 {:solved true, :min 1, :sec 22, :right? :all, :runs 2, :no-error false}]} ))
+   :another [:R2-2 {:solved true, :min 1, :sec 22, :right? :all, :runs 2, :no-error false}]}))
+
+;;test update-result
+(def dummy-proccessed-qs
+ '([:CM3-1 150 true]
+   [:CM3-1 310 false]
+   [:CS3-1 210 true]
+   [:R3-1 95 true]
+   [:CS3-1 190 false]
+   [:R3-1 235 true]
+   [:R3-1 50 false]
+   [:CM3-1 70 true]
+   [:CM3-1 411 true]
+   [:CS3-1 219 false]))
+
+;;simple checks
+(expect {:tries 1, :successes 1, :total-time 59, :average-time 59, :failures 0}
+ (tally-results (get-all-of-question "0-2" {:the dummy-R})))
+
+(expect {:tries 1, :successes 1, :total-time 98, :average-time 98, :failures 0}
+ (tally-results (get-all-of-question "0-3" {:the dummy-C})))
+
+(expect {:tries 10, :successes 6, :total-time 1940, :average-time 194, :failures 4}
+ (tally-results dummy-proccessed-qs))
+
+(expect {:tries 20, :successes 12, :total-time 3880, :average-time 194, :failures 8}
+ (tally-results (into dummy-proccessed-qs dummy-proccessed-qs)))
+
+;;needs proper tests for update-result

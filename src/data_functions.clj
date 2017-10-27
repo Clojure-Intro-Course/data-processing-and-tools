@@ -206,25 +206,49 @@
 
 (defn get-all-of-question
  "takes a question as a string or keyword and a vector of people and returns every try of that question in a vector.
- Provide a third argument forexact keyword matching."
+ Provide a third argument for exact keyword matching."
  ([question-full input-list]
  (let [question (question-number question-full)]
  ;;removes the empty returns from non-matching people.
   (filter #(not (nil? %))
    (map #(get-question-from-person % question) input-list))))
-
+ ;; specific matching version
  ([question input-list optional]
  ;;removes the empty returns from non-matching people.
   (filter #(not (nil? %))
    (map #(get-question-from-person % question "Opttrigger") input-list))))
 
-
-
-
 ; takes a question and version info, returns the targeted result
 (defn get-question-info [question ver]
   (let [tar (str ver question)]
     (filter #(= tar (first %)) (get-question question))))
+
+;; the results data table will be a map, with each question being a key.
+;;each value is a map, with each language being a key.
+;;finally, each value is a map with the following fields, refered to as a result
+;;successes: the number of times someone got the question
+;;tries: the total number of attempts
+;;failures: the number of times someone gave up.
+;;total-time: the time in seconds spent on the problem
+;;average-time: the average time in seconds spent
+;;
+
+(defn update-result
+"adds the time, succes or failure to the supplied result"
+ [prev, inp-result]
+  (let [time (second inp-result) endscore (last inp-result)]
+   (update  (if endscore
+    (update prev :successes inc)
+    (update prev :failures inc)) :total-time + time)))
+
+(defn tally-results
+ "takes a list of processed questions, and builds the results data table for them"
+ [inp-list]
+  (let [base (reduce update-result {:total-time 0, :successes 0 :failures 0} inp-list)
+        tries (+ (base :successes) (base :failures))]
+   (into base
+    {:tries tries
+    :average-time (/ (:total-time base) tries)})))
 
 
 

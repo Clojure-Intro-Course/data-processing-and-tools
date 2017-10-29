@@ -244,11 +244,31 @@
 (defn tally-results
  "takes a list of processed questions, and builds the results data table for them"
  [inp-list]
+ (if (empty? inp-list)
+ ;;if none are found, return this.
+  {:total-time 0, :successes 0 :failures 0 :tries 0 :average-time 0}
+ ;;else
   (let [base (reduce update-result {:total-time 0, :successes 0 :failures 0} inp-list)
         tries (+ (base :successes) (base :failures))]
    (into base
     {:tries tries
-    :average-time (/ (:total-time base) tries)})))
+    :average-time (/ (:total-time base) tries)}))))
+
+(defn gather-question
+  "takes a question and runs tally-results on each version of it, returning a map"
+ ([question-number]
+  (gather-question question-number subjects))
+ ([question-number inp-list]
+  (let [questions (get-all-of-question question-number inp-list)
+       racket-questions (filter #(racket? (first %)) questions)
+       clojure-questions (filter #(not (racket? (first %))) questions)
+       CM-questions (filter #(modified? (first %)) clojure-questions)
+       CS-questions (filter #(not (modified? (first %))) clojure-questions)]
+  {:CS (tally-results CS-questions)
+   :CM (tally-results CM-questions)
+   :R  (tally-results racket-questions)})))
+;;will be bound to a function in a bit, but now: (map #(hash-map (keyword %) (gather-question %)) q-str)
+;;builds something very close to the final data setup.
 
 
 

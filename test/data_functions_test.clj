@@ -181,4 +181,58 @@
 (expect {:tries 20, :successes 12, :total-time 3880, :average-time 194, :failures 8}
  (tally-results (into dummy-proccessed-qs dummy-proccessed-qs)))
 
-;;needs proper tests for update-result
+;;tests for update-result
+(expect {:successes 1, :failures 0, :total-time 150}
+(update-result {:total-time 0, :successes 0 :failures 0} [:CM3-1 150 true]))
+
+(expect {:successes 1, :failures 1, :total-time 400}
+(update-result {:successes 1, :failures 0, :total-time 150} [:CM3-1 250 false]))
+
+;;tests for gather-question
+(expect {:CM {:tries 0,
+         :successes 0,
+         :total-time 0,
+         :average-time 0,
+         :failures 0},
+         :R {:tries 1,
+         :successes 1,
+         :total-time 59,
+         :average-time 59,
+         :failures 0},
+         :CS {:tries 0,
+         :successes 0,
+         :total-time 0,
+         :average-time 0,
+         :failures 0}} (gather-question "0-2" {:the dummy-R}))
+
+(expect {:CM {:tries 0,
+         :successes 0,
+         :total-time 0,
+         :average-time 0,
+         :failures 0},
+         :R {:tries 1,
+         :successes 1,
+         :total-time 59,
+         :average-time 59,
+         :failures 0},
+         :CS {:tries 0,
+         :successes 0,
+         :total-time 0,
+         :average-time 0,
+         :failures 0}} (gather-question "0-2" {:the dummy-R, :other dummy-C}))
+
+(expect {:CM {:tries 2,
+         :successes 2,
+         :total-time 196,
+         :average-time 98,
+         :failures 0},
+         :R {:tries 0,
+         :successes 0,
+         :total-time 0,
+         :average-time 0,
+         :failures 0},
+         :CS {:tries 0,
+         :successes 0,
+         :total-time 0,
+         :average-time 0,
+         :failures 0}} (gather-question "0-3" {:the dummy-C, :other dummy-C}))

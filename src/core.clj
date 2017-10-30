@@ -16,5 +16,5 @@
     (= (first (first args)) \q)
       (if (empty? (rest (first args)))
         (print-all-questions)
-        (print-question (apply str (rest (first args)))))
+        (let [q-name (apply str (rest (first args)))] (print-question (gather-question q-name) q-name)))
     :else "No argument or an invalid argument is given"))

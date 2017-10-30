@@ -267,8 +267,6 @@
   {:CS (tally-results CS-questions)
    :CM (tally-results CM-questions)
    :R  (tally-results racket-questions)})))
-;;will be bound to a function in a bit, but now: (map #(hash-map (keyword %) (gather-question %)) q-str)
-;;builds something very close to the final data setup.
 
 (defn find-all-questions
  "takes a list of people and finds all the questions, returning them in a vector, and removing tries"
@@ -322,31 +320,33 @@
                     RacketId (subjects RacketId)}))))
 
 
-(defn print-question [question]
-  (let [q-r (get-question-info question "R")
-        q-cm (get-question-info question "CM")
-        q-cs(get-question-info question "CS")]
-    (println "\n========== Question" question " information: ============\n")
+(defn print-question
+  "takes a  question result map and prints it nicely"
+  [question question-name]
+ (let [r-qs (:R question)
+       cm-qs (:CM question)
+       cs-qs (:CS question)]
+   (println "\n========== Question" (question-number question-name) "information: ============\n")
+   (println "Racket tries:           " (:tries r-qs))
+   (print "\t| Avg time: "  (nice-time (int (Math/floor (:average-time r-qs)))) "|")
+   (println " Correct ans: " (int (Math/floor (* 100 (/ (:successes r-qs) (:tries r-qs))))) "% |")
 
-    (println "Racket tries:           " (nice-solved (nice-str q-r)))
-    (print "\t| Avg time: " (nice-time (find-avg-t q-r)) "|")
-    (println " Correct ans: " (correct-ans q-r) "% |")
+   (println "Clojure Modified tries:           " (:tries cm-qs))
+   (print "\t| Avg time: "  (nice-time (int (Math/floor (:average-time cm-qs)))) "|")
+   (println " Correct ans: " (int (Math/floor (* 100 (/ (:successes cm-qs) (:tries cm-qs))))) "% |")
 
-    (println "Clojure Modified tries: " (nice-solved (nice-str q-cm)))
-    (print "\t| Avg time: " (nice-time (find-avg-t q-cm)) "|")
-    (println " Correct ans: " (correct-ans q-cm) "% |")
+   (println "Clojure Standard tries:           " (:tries cs-qs))
+   (print "\t| Avg time: "  (nice-time (int (Math/floor (:average-time cs-qs)))) "|")
+   (println " Correct ans: " (int (Math/floor (* 100 (/ (:successes cs-qs) (:tries cs-qs))))) "% |")))
 
-    (println "Clojure Standard tries: " (nice-solved (nice-str q-cs)))
-    (print "\t| Avg time: " (nice-time (find-avg-t q-cs)) "|")
-    (println " Correct ans: " (correct-ans q-cs) "% |")))
 
-(defn print-all-questions []
-  (loop [q-l q-str]
-    (if (empty? q-l)
-      nil
-      (do
-        (print-question (first q-l))
-        (recur (rest q-l))))))
+
+(defn print-all-questions
+ ([inp-list]
+  (let [tree (build-result-tree inp-list)]
+   (doall (map print-question (vals tree) (keys tree)))))
+ ([] (print-all-questions subjects)))
+
 
 ;;Comparison functions=============================
 

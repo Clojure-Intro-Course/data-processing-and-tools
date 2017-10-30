@@ -1,5 +1,6 @@
-(ns data_functions
-  (:use data))
+(ns data-functions
+  (:use data)
+  (:require clojure.string))
 
 
 ;; generic helper functions =============================================================
@@ -13,6 +14,11 @@
   "gets the key (string) of nth vector"
   [person th]
   (nth person (* th 2)))
+
+(defn get-session
+ "gets the session from the data file"
+ [session]
+  (subjects session))
 
 (defn time->seconds
   "takes the map of a question in a person structure
@@ -31,10 +37,30 @@
   (str (quot seconds 60) "min " (mod seconds 60) "sec"))
 
 (defn lang?
-  "takes a string
+  "takes a string or keyword
   and returns 0 if it represents racket 1 if it represents clojure"
-  [s]
-  (if (= (first s) \R) 0 1))
+  [string]
+  (if (keyword? string) (lang? (name string))
+   (if (= (first string) \R) 0 1)))
+
+(defn racket?
+ "takes a string or keyword and returns true if it represents racket"
+ [inp-string]
+ (if (keyword? inp-string) (racket? (name inp-string))
+   (= (first inp-string) \R)))
+
+(defn modified?
+  "takes a string or keyword and returns true if it represents our error messages"
+  [inp-string]
+  (if (keyword? inp-string) (modified? (name inp-string))
+    (= (second inp-string) \M)))
+
+(defn question-number
+ "takes a string or keyword and returns the question number stripped from the end"
+ [question]
+ (if (keyword? question)
+   (question-number (name question))
+   (last (clojure.string/split question #"[A-Z]"))))
 
 
 ;; time adjustment functions =============================================================
@@ -66,7 +92,7 @@
   "takes a person as an argument
   and returns the number of questions the person solved"
   [person]
-  (count (filter (fn [question] (:solved question)) (vals (vector->map person)))))
+  (count (filter (fn [question] (:solved question)) (vals (vector->map  person)))))
 
 
 ;; extracting each question info functions #0 ==========================================================
@@ -95,13 +121,17 @@
                 (conj result [id (- (time->seconds h-map) previous-t) (:solved h-map)])
                 (time->seconds h-map)))))
 
+
+
 (defn take-q-info
   "takes a person structure and returns the vector of
   questions' info that the person attemped to solve
   (re-attempts are separately calculated)"
   [person]
   (let [pair-vec (vec (map vec (partition 2 person)))]
-    (processor pair-vec [] 0) ))
+    (processor pair-vec [] 0)))
+
+
 
 ;; extracting each question info functions #1 (filtering and merging retries) ===========================
 
@@ -111,7 +141,7 @@
   [person decide]
   (vec
     (filter
-      (fn [each-vec] ((if decide > <=) (count (first each-vec)) 5))
+      (fn [each-vec] ((if decide > <=) (count (name (first each-vec))) 5))
       (take-q-info person))))
 
 (defn merge-retry
@@ -119,7 +149,7 @@
   [original each-retry info]
   (map
     (fn [each-vec]
-      (if (= (subs (first each-vec) 0 (+ info 4)) (subs (first each-retry) 0 (+ info 4)))
+      (if (= (subs (name (first each-vec)) 0 (+ info 4)) (subs (name (first each-retry)) 0 (+ info 4)))
         [(first each-vec) (+ (second each-vec) (second each-retry)) (last each-retry)]
         each-vec))
     original))
@@ -130,7 +160,7 @@
   [original retry]
   (if (empty? retry)
     original
-    (merge-recur (merge-retry original (first retry) (lang? (first (first original))) )
+    (merge-recur (merge-retry original (first retry) (lang? (first (first original))))
                  (rest retry))))
 
 (defn adjusted-data
@@ -141,6 +171,7 @@
   (let [original (retry-filter person false)
         retry (retry-filter person true)]
     (merge-recur original retry)))
+
 
 
 ;; question by question analysis =======================================================
@@ -154,76 +185,187 @@
     0
     (* 100 (double (/ (count (filter #(last %) v)) (count v))))))
 
-; a funtion that takes a person,
-; and returns the specific question
-(defn get-question-from-person [person question]
-  (let [lang (lang? (first person))]
-    (filter #(= (subs (first %) (+ lang 1) (+ lang 4)) question) (adjusted-data person))))
+
+(defn get-question-from-person
+ "retrieves the question specified from the person vector, pass a third argument to specify strict matching"
+ ([person question-full]
+ (first (let [person-info (adjusted-data (second person))
+       question (question-number question-full)]
+   (filter #(= question (question-number (first %))) person-info))))
+
+;;strict version
+ ([person question strict]
+ (first (let [person-info (adjusted-data (second person))]
+   (filter #(= question (first %)) person-info)))))
+;; possible todo, make this 'smart' and able to choose whether to use the second.
+
 
 ; takes a question and returns a vector of every try of that question
 (defn get-question [question]
   (reduce (fn [default each] (concat default (get-question-from-person each question))) [] q-tables))
+
+(defn get-all-of-question
+ "takes a question as a string or keyword and a vector of people and returns every try of that question in a vector.
+ Provide a third argument for exact keyword matching."
+ ([question-full input-list]
+ (let [question (question-number question-full)]
+ ;;removes the empty returns from non-matching people.
+  (filter #(not (nil? %))
+   (map #(get-question-from-person % question) input-list))))
+ ;; specific matching version
+ ([question input-list optional]
+ ;;removes the empty returns from non-matching people.
+  (filter #(not (nil? %))
+   (map #(get-question-from-person % question "Opttrigger") input-list))))
 
 ; takes a question and version info, returns the targeted result
 (defn get-question-info [question ver]
   (let [tar (str ver question)]
     (filter #(= tar (first %)) (get-question question))))
 
+;; the results data table will be a map, with each question being a key.
+;;each value is a map, with each language being a key.
+;;finally, each value is a map with the following fields, refered to as a result
+;;successes: the number of times someone got the question
+;;tries: the total number of attempts
+;;failures: the number of times someone gave up.
+;;total-time: the time in seconds spent on the problem
+;;average-time: the average time in seconds spent
+;;
+
+(defn update-result
+"adds the time, succes or failure to the supplied result"
+ [prev, inp-result]
+  (let [time (second inp-result) endscore (last inp-result)]
+   (update  (if endscore
+    (update prev :successes inc)
+    (update prev :failures inc)) :total-time + time)))
+
+(defn tally-results
+ "takes a list of processed questions, and builds the results data table for them"
+ [inp-list]
+ (if (empty? inp-list)
+ ;;if none are found, return this.
+  {:total-time 0, :successes 0 :failures 0 :tries 0 :average-time 0}
+ ;;else
+  (let [base (reduce update-result {:total-time 0, :successes 0 :failures 0} inp-list)
+        tries (+ (base :successes) (base :failures))]
+   (into base
+    {:tries tries
+    :average-time (/ (:total-time base) tries)}))))
+
+(defn gather-question
+  "takes a question and runs tally-results on each version of it, returning a map"
+ ([question-number]
+  (gather-question question-number subjects))
+ ([question-number inp-list]
+  (let [questions (get-all-of-question question-number inp-list)
+       racket-questions (filter #(racket? (first %)) questions)
+       clojure-questions (filter #(not (racket? (first %))) questions)
+       CM-questions (filter #(modified? (first %)) clojure-questions)
+       CS-questions (filter #(not (modified? (first %))) clojure-questions)]
+  {:CS (tally-results CS-questions)
+   :CM (tally-results CM-questions)
+   :R  (tally-results racket-questions)})))
+
+(defn find-all-questions
+ "takes a list of people and finds all the questions, returning them in a vector, and removing tries"
+  [inp-list]
+  (filter #(< (.length (name %)) 6) (reduce #(into %1 (filter keyword? (second %2))) #{} inp-list)))
+
+(defn build-result-tree
+"takes a list of people and builds the list of stats for each question"
+ [inp-list]
+ (reduce
+  #(into %1 (apply hash-map [(keyword %2) (gather-question %2 inp-list)]))
+  {}
+  (map question-number (find-all-questions inp-list))))
+
+
+
 
 ;; printing result =====================================================================
 
-(defn print-result [p-vec names]
-  (when ((complement empty?) p-vec)
-    (let [head (first p-vec)]
-      (printf "%s\t\t%s\t%s\n"
-              (first names)
-              (nice-time (after-time-adj head))
-              (str (solved-questions head) "/" 8))
+(defn print-result [input-subs]
+  (when ((complement empty?) input-subs)
+    (let [head (first input-subs)]
+    (printf "%s\t\t%s\t%s\n"
+      (name (first head))
+      (nice-time (after-time-adj (second head)))
+      (str (solved-questions (second head)) "/" 8))
       (print "Tried Q: ")
-      (println (nice-str (adjusted-data head)))
+      (println (nice-str (adjusted-data (second head))))
       (println)
-      (print-result (rest p-vec) (rest names)))))
+      (print-result (rest input-subs)))))
 
 (defn print-outline
   "takes a vector of data points and prints the data as a table"
-  [p-vec names]
+  [input-subs]
   (println "\n|Name\t\t|Total Time\t|Solved Questions/Number of Questions\n")
-  (print-result p-vec names)
+  (print-result input-subs)
   (println "===================================END========================================"))
 
 (defn print-all []
-  (print-outline q-tables q-names))
+  (print-outline subjects))
 
-(defn print-select [s]
-  (let [name-r (str "R" s)
-        id-r (.indexOf q-names name-r)
-        id-c (inc id-r)
-        name-c (get q-names id-c)]
-    (print-outline [(get q-tables id-r) (get q-tables id-c)] [name-r name-c])))
+(defn print-select [selected]
+  (let [RacketId (keyword (str "R" selected))
+        ClojureId (keyword (str "CS" selected))
+        ClojureModifiedId (keyword (str "CM" selected))]
+(when (not (empty? (subjects ClojureModifiedId)))
+    (print-outline {ClojureModifiedId (subjects ClojureModifiedId)
+                    RacketId (subjects RacketId)}))
+(when (not (empty? (subjects ClojureId)))
+    (print-outline {ClojureId (subjects ClojureId)
+                    RacketId (subjects RacketId)}))))
 
 
-(defn print-question [question]
-  (let [q-r (get-question-info question "R")
-        q-cm (get-question-info question "CM")
-        q-cs(get-question-info question "CS")]
-    (println "\n========== Question" question " information: ============\n")
+(defn print-question
+  "takes a  question result map and prints it nicely"
+  [question question-name]
+ (let [r-qs (:R question)
+       cm-qs (:CM question)
+       cs-qs (:CS question)]
+   (println "\n========== Question" (question-number question-name) "information: ============\n")
+   (println "Racket tries:           " (:tries r-qs))
+   (print "\t| Avg time: "  (nice-time (int (Math/floor (:average-time r-qs)))) "|")
+   (println " Correct ans: " (int (Math/floor (* 100 (/ (:successes r-qs) (:tries r-qs))))) "% |")
 
-    (println "Racket tries:           " (nice-solved (nice-str q-r)))
-    (print "\t| Avg time: " (nice-time (find-avg-t q-r)) "|")
-    (println " Correct ans: " (correct-ans q-r) "% |")
+   (println "Clojure Modified tries:           " (:tries cm-qs))
+   (print "\t| Avg time: "  (nice-time (int (Math/floor (:average-time cm-qs)))) "|")
+   (println " Correct ans: " (int (Math/floor (* 100 (/ (:successes cm-qs) (:tries cm-qs))))) "% |")
 
-    (println "Clojure Modified tries: " (nice-solved (nice-str q-cm)))
-    (print "\t| Avg time: " (nice-time (find-avg-t q-cm)) "|")
-    (println " Correct ans: " (correct-ans q-cm) "% |")
+   (println "Clojure Standard tries:           " (:tries cs-qs))
+   (print "\t| Avg time: "  (nice-time (int (Math/floor (:average-time cs-qs)))) "|")
+   (println " Correct ans: " (int (Math/floor (* 100 (/ (:successes cs-qs) (:tries cs-qs))))) "% |")))
 
-    (println "Clojure Standard tries: " (nice-solved (nice-str q-cs)))
-    (print "\t| Avg time: " (nice-time (find-avg-t q-cs)) "|")
-    (println " Correct ans: " (correct-ans q-cs) "% |")))
 
-(defn print-all-questions []
-  (loop [q-l q-str]
-    (if (empty? q-l)
-      nil
-      (do
-        (print-question (first q-l))
-        (recur (rest q-l))))))
+
+(defn print-all-questions
+ ([inp-list]
+  (let [tree (build-result-tree inp-list)]
+   (doall (map print-question (vals tree) (keys tree)))))
+ ([] (print-all-questions subjects)))
+
+
+;;Comparison functions=============================
+
+(def test-sub (subjects :R14))
+
+(defn build-entry
+  "Takes a subject, and returns a map of the solved problems,
+  with problem names as keys, and solved problems as 1s."
+  [inp-subject]
+  (let [entries (filter map? inp-subject)
+        names (filter string? inp-subject)]
+    (zipmap (mapv keyword names)
+            (mapv #(if % 1 0) (map :solved entries)))))
+
+(defn build-sums
+  "Takes a vector of subjects, and returns the total solved for each problem"
+  [inp-subjects]
+  (let [duped-list (map build-entry (vals inp-subjects))
+        built-list (apply hash-map (keys duped-list))]
+(print built-list "and"  duped-list)
+(loop [todo (first duped-list), done built-list, undone duped-list]
+   (recur (first (rest undone)) (update done (first todo) #(+ % (second todo))) (rest undone)))))

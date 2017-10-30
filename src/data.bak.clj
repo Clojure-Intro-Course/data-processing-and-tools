@@ -226,7 +226,7 @@
   [:R0-2 {:solved true, :min 3, :sec 53, :right? :some, :runs 2, :no-error false}
    :R0-3 {:solved true, :min 5, :sec 50, :right? :most, :runs 2, :no-error false}
    :R1-1 {:solved true, :min 8, :sec 4, :right? :most, :runs 3, :no-error false}
-   :R1-4 {:solved false, :min 9, :sec 41, :right? :never, :runs 2, :no-error false}
+   :R1-4 {:solved false, :min 9, :sec :41, :right? :never, :runs 2, :no-error false}
    :R2-2 {:solved true, :min 11, :sec 50, :right? :some, :runs 3, :no-error false}
    :R2-4 {:solved false, :min 16, :sec 49, :right? :some, :runs 6, :no-error false, :time-adj -22};Chrome froze while trying to view this question
    :R3-2 {:solved false, :min 20, :sec 59, :right? :never, :runs 6 :no-error false}]
@@ -265,7 +265,7 @@
    :R1-4 {:solved true, :min 6, :sec 28, :right? :all, :runs 3, :no-error false}
    :R2-3 {:solved true, :min 9, :sec 23, :right? :all, :runs 3, :no-error false}
    :R2-4 {:solved true, :min 11, :sec 0, :right? :all, :runs 3, :no-error false}
-   :R3-1 {:solved false, :min 13, :sec 47, :right? :never, :runs 1, :no-error false}
+   :R3-1 {:solved false, :min 13, :sec :47, :right? :never, :runs 1, :no-error false}
    :R3-3 {:solved false, :min 18, :sec 46, :right? :never, :runs 3, :no-error false}]
 
  :CM8
@@ -281,7 +281,7 @@
   [:R0-2 {:solved true, :min 1, :sec 24, :right? :all, :runs 2, :no-error false}
    :R0-3 {:solved true, :min 2, :sec 54, :right? :all, :runs 2, :no-error false :time-adj -20};racket took a while to evaulate.
    :R1-1 {:solved true, :min 8 :sec 10, :right? :all, :runs 2, :no-error false :time-adj -126}
-   :R1-2 {:solved true, :min 2, :sec 20, :right? :all, :runs 2, :no-error false, :time-adj 497} ;Video is in two parts, this adds the legnth of the first halfs problems
+   :R1-2 {:solved true, :min 2, :sce 20, :right? :all, :runs 2, :no-error false, :time-adj 497} ;Video is in two parts, this adds the legnth of the first halfs problems
    :R2-1 {:solved false, :min 16, :sec 25, :right? :never, :runs 2, :no-error false}]
 
  :CS12
@@ -291,13 +291,3 @@
    :CS1-4 {:solved false, :min 18, :sec 59, :right? :most, :runs 3, :no-error false}
    :CS2-2 {:solved true, :min 20, :sec 59, :right? :all, :runs 1, :no-error false}]
  })
-
-
-;;goes through and creates q-names from subjects
-(def q-names (vec (map #(apply str (rest(str %))) (keys subjects))))
-
-;;creates q-tables from subjects
-(def q-tables (map keyword q-names))
-
-
-(def q-str ["0-1" "0-2" "0-3" "0-4" "1-1" "1-2" "1-3" "1-4" "2-1" "2-2" "2-3" "2-4" "3-1" "3-2" "3-3" "3-4"])

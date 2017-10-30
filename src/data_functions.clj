@@ -270,6 +270,20 @@
 ;;will be bound to a function in a bit, but now: (map #(hash-map (keyword %) (gather-question %)) q-str)
 ;;builds something very close to the final data setup.
 
+(defn find-all-questions
+ "takes a list of people and finds all the questions, returning them in a vector, and removing tries"
+  [inp-list]
+  (filter #(< (.length (name %)) 6) (reduce #(into %1 (filter keyword? (second %2))) #{} inp-list)))
+
+(defn build-result-tree
+"takes a list of people and builds the list of stats for each question"
+ [inp-list]
+ (reduce
+  #(into %1 (apply hash-map [(keyword %2) (gather-question %2 inp-list)]))
+  {}
+  (map question-number (find-all-questions inp-list))))
+
+
 
 
 ;; printing result =====================================================================

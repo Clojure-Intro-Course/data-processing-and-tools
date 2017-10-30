@@ -236,3 +236,23 @@
          :total-time 0,
          :average-time 0,
          :failures 0}} (gather-question "0-3" {:the dummy-C, :other dummy-C}))
+
+;;test find all questions
+(expect #{:R2-4 :R2-3 :R0-4 :R1-1 :R0-2 :R3-2 :R1-4 :R3-4} (apply hash-set (find-all-questions {:the
+dummy-R})))
+
+(expect #{:CM2-1 :CM2-2 :CM0-1 :CM1-2 :CM0-3 :CM3-3 :CM1-3} (apply hash-set (find-all-questions {:the
+dummy-C})))
+
+(expect #{:CM2-1 :CM2-2 :CM0-1 :CM1-2 :CM0-3 :CM3-3 :CM1-3 :R2-4 :R2-3 :R0-4 :R1-1 :R0-2 :R3-2 :R1-4 :R3-4}
+ (apply hash-set (find-all-questions {:them dummy-R :both dummy-C})))
+
+
+;;test for build results
+;;this is actuall the perfect test for spec, will write it in spec at a later date.
+
+;;expect 0 clojure tries in a racket list
+(expect 0 (get-in (build-result-tree {:the dummy-R}) [:2-4 :CS :tries]))
+(expect 0 (get-in (build-result-tree {:the dummy-R}) [:2-4 :CM :tries]))
+;;expect a  single racket try in the simple racket list
+(expect 1 (get-in (build-result-tree {:the dummy-R}) [:2-4 :R :tries]))

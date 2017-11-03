@@ -276,10 +276,10 @@
 (defn build-result-tree
 "takes a list of people and builds the list of stats for each question"
  [inp-list]
- (reduce
+ (sort (reduce
   #(into %1 (apply hash-map [(keyword %2) (gather-question %2 inp-list)]))
   {}
-  (map question-number (find-all-questions inp-list))))
+  (map question-number (find-all-questions inp-list)))))
 
 
 

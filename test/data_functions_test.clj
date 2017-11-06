@@ -73,6 +73,14 @@
 (expect "4-1" (question-number :CM4-1))
 (expect "0-4" (question-number :R0-4))
 
+(expect true (question-number? :R0-1))
+(expect true (question-number? :CM2-1))
+(expect true (question-number? "R3-2"))
+(expect false (question-number? :C2-1))
+(expect false (question-number? "CM5-1"))
+
+
+
 
 ;; tests for time-adj-result =================================================================
 

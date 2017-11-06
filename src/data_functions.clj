@@ -62,6 +62,17 @@
    (question-number (name question))
    (last (clojure.string/split question #"[A-Z]"))))
 
+(defn question-number?
+  [inp-question]
+  (if (keyword? inp-question)
+      (question-number? (name inp-question))
+      ;;now we have sting, make sure it is starts the right way, and has a valid number
+      (and
+       (or (clojure.string/starts-with? inp-question "R")
+           (clojure.string/starts-with? inp-question "CM")
+           (clojure.string/starts-with? inp-question "CS"))
+       (not (nil? (some (partial = (question-number inp-question)) q-str))))))
+
 
 ;; time adjustment functions =============================================================
 
@@ -280,6 +291,7 @@
   #(into %1 (apply hash-map [(keyword %2) (gather-question %2 inp-list)]))
   {}
   (map question-number (find-all-questions inp-list))))
+
 
 
 

@@ -200,7 +200,7 @@
 (defn get-question-from-person
  "retrieves the question specified from the person vector, pass a third argument to specify strict matching"
  ([person question-full]
- (first (let [person-info (adjusted-data (second person))
+ (first (let [person-info (partition 2 (second person))
        question (question-number question-full)]
    (filter #(= question (question-number (first %))) person-info))))
 

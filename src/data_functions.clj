@@ -73,6 +73,9 @@
            (clojure.string/starts-with? inp-question "CS"))
        (not (nil? (some (partial = (question-number inp-question)) q-str))))))
 
+(def valid-q-numbers (apply hash-set (map keyword q-str)))
+
+
 
 ;; time adjustment functions =============================================================
 

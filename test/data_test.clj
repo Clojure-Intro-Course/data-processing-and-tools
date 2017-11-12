@@ -29,7 +29,7 @@
 (s/def ::time-adj (s/and #(not (= % 0)) int?))
 
 ;;question-number should be in the range of questions, and should begin with CM, CS or R
-(s/def ::question-number question-number?)
+(s/def ::question-number valid-q-numbers)
 
 
 
@@ -52,4 +52,29 @@
 (s/def ::subject-entry ())
 
 
-(def example 10)
+;;=====================Spec for result tree
+
+(s/def ::tries nat-int?)
+(s/def ::successes nat-int?)
+(s/def ::failures nat-int?)
+(s/def ::total-time nat-int?)
+(s/def ::average-time (s/and #(<= 0 % ) number?))
+
+
+;; a result should have the correct information
+ (s/def ::result (s/and (s/keys :req-un [::tries ::successes ::failures ::total-time ::average-time])
+                        #(= (:tries %) (+ (:successes %) (:failures %)))
+                        #(= (:average-time %) (/ (:total-time %) (:tries %)))))
+
+(s/def ::R ::result)
+(s/def ::CS ::result)
+(s/def ::CM ::result)
+(s/def ::lang-keyword #(contains? #{:R :CS :CM} %))
+
+;;a question result should have three result fields
+(s/def ::question-result (s/keys :req-un [::R ::CS ::CM]))
+
+;;a result tree should have only question-results
+(s/def ::result-tree (s/map-of ::question-number ::question-result))
+
+(def example (build-result-tree subjects))

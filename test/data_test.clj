@@ -29,9 +29,7 @@
 (s/def ::time-adj (s/and #(not (= % 0)) int?))
 
 ;;question-number should be in the range of questions, and should begin with CM, CS or R
-(s/def ::question-number valid-q-numbers)
-
-
+(s/def ::question-number question-number?)
 
 ;;every question-entry should have the correct map
 (s/def ::question-entry (s/keys :req-un [::min
@@ -42,14 +40,23 @@
                                         ::right?]
                                 :opt-un [::time-adj]))
 
+;;each line of a subject should have a question number and an question-entry
 (s/def ::question-number-in-subject (s/tuple ::question-number ::question-entry))
 
+;;each subject should be
 (defn subject?
   [inp-subject]
-  (let [pairs (partition 2 inp-subject)]
-  (reduce #(and (s/valid? ::question-number-in-subject %1) %2) pairs)))
+  (let [pairs (mapv vec (partition 2 (first (rest inp-subject))))
+        validator #(s/valid? ::question-number-in-subject %)]
+  (and
+    (every? identity (map validator pairs))
+    (s/valid? valid-subj-numbers (first inp-subject)))))
 
-(s/def ::subject-entry ())
+(s/def ::subject subject?)
+
+(s/def ::subject-data (s/coll-of ::subject))
+
+
 
 
 ;;=====================Spec for result tree

@@ -31,30 +31,30 @@
 ;;question-number should be in the range of questions, and should begin with CM, CS or R
 (s/def ::question-number question-number?)
 
-;;every question-entry should have the correct map
-(s/def ::question-entry (s/keys :req-un [::min
+;;every question-entry-result should have the correct map
+(s/def ::question-entry-result (s/keys :req-un [::min
                                         ::sec
                                         ::runs
                                         ::solved
                                         ::no-error
                                         ::right?]
                                 :opt-un [::time-adj]))
+(s/def ::question-entry (s/+ (s/cat :q-number subject-numbers :q-entry ::question-entry-result)))
 
-;;each line of a subject should have a question number and an question-entry
-(s/def ::question-number-in-subject (s/tuple ::question-number ::question-entry))
+; ;;each line of a subject should have a question number and an question-entry
+; (s/def ::question-number-in-subject (s/tuple ::question-number ::question-entry))
+; ;;each subject should be
+; (defn subject?
+;   [inp-subject]
+;   (let [pairs (mapv vec (partition 2 (first (rest inp-subject))))
+;         validator #(s/valid? ::question-number-in-subject %)]
+;   (and
+;     (every? identity (map validator pairs))
+;     (s/valid? valid-subj-numbers (first inp-subject)))))
+;
+; (s/def ::subject subject?)
 
-;;each subject should be
-(defn subject?
-  [inp-subject]
-  (let [pairs (mapv vec (partition 2 (first (rest inp-subject))))
-        validator #(s/valid? ::question-number-in-subject %)]
-  (and
-    (every? identity (map validator pairs))
-    (s/valid? valid-subj-numbers (first inp-subject)))))
-
-(s/def ::subject subject?)
-
-(s/def ::subject-data (s/coll-of ::subject))
+(s/def ::subject-data (s/coll-of ::question-entry))
 
 
 

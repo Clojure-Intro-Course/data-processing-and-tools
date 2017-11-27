@@ -214,11 +214,6 @@
    (filter #(= question (first %)) person-info)))))
 ;; possible todo, make this 'smart' and able to choose whether to use the second.
 
-
-; takes a question and returns a vector of every try of that question
-(defn get-question [question]
-  (reduce (fn [default each] (concat default (get-question-from-person each question))) [] q-tables))
-
 (defn get-all-of-question
  "takes a question as a string or keyword and a vector of people and returns every try of that question in a vector.
  Provide a third argument for exact keyword matching."
@@ -233,10 +228,6 @@
   (filter #(not (nil? %))
    (map #(get-question-from-person % question "Opttrigger") input-list))))
 
-; takes a question and version info, returns the targeted result
-(defn get-question-info [question ver]
-  (let [tar (str ver question)]
-    (filter #(= tar (first %)) (get-question question))))
 
 ;; the results data table will be a map, with each question being a key.
 ;;each value is a map, with each language being a key.

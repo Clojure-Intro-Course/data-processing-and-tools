@@ -204,13 +204,14 @@
 (defn get-question-from-person
  "retrieves the question specified from the person vector, pass a third argument to specify strict matching"
  ([person question-full]
- (first (let [person-info (adjusted-data (second person))
+ (first (let [person-info (partition 2 (second person))
        question (question-number question-full)]
-   (filter #(= question (question-number (first %))) person-info))))
+       (println question)
+   (filter #(= question  (question-number (first (first (first %)))) ) person-info))))
 
 ;;strict version
  ([person question strict]
- (first (let [person-info (adjusted-data (second person))]
+ (first (let [person-info (second person)]
    (filter #(= question (first %)) person-info)))))
 ;; possible todo, make this 'smart' and able to choose whether to use the second.
 
@@ -283,7 +284,7 @@
 "takes a list of people and builds the list of stats for each question"
  [inp-list]
  (sort (reduce
-  #(into %1 (apply hash-map [(keyword %2) (gather-question %2 inp-list)]))
+  #(conj %1 (apply hash-map [(keyword %2) (gather-question %2 inp-list)]))
   {}
   (map question-number (find-all-questions inp-list)))))
 

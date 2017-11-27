@@ -7,4 +7,4 @@
                  [expectations "2.1.8"]
                  [proto-repl "0.3.1"]]
   :main ^:skip-aot core
-  :plugins [[lein-expectations "0.0.8"]])
+  :plugins [[lein-expectations "0.0.8"][lein-autoexpect "1.9.0"]])
